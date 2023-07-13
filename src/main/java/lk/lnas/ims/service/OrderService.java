@@ -106,6 +106,16 @@ public class OrderService {
         orderDTO.setTransactionMethod(order.getTransactionMethod());
         orderDTO.setTransaction(order.getTransaction() == null ? null : order.getTransaction().getId());
         orderDTO.setDocumentId(order.getDocumentId());
+        orderDTO.setItems(order.getItems().stream().map(orderItem -> {
+            OrderItemDTO dto = new OrderItemDTO();
+            dto.setId(orderItem.getId());
+            dto.setPlant(orderItem.getPlant().getId());
+            dto.setPrice(orderItem.getPrice());
+            dto.setDiscount(orderItem.getDiscount());
+            dto.setQty(orderItem.getQty());
+            dto.setDescription(orderItem.getDescription());
+            return dto;
+        }).toList());
         return orderDTO;
     }
 
@@ -142,6 +152,7 @@ public class OrderService {
         orderItem.setDiscount(orderItemDTO.getDiscount());
         orderItem.setQty(orderItemDTO.getQty());
         orderItem.setDescription(orderItemDTO.getDescription());
+
         return orderItem;
     }
 
@@ -161,6 +172,9 @@ public class OrderService {
         List<Object[]> results = repository.findMonthlyOrderTotals(sixMonthsAgo, firstDayOfMonth);
         return mapOrderSummaries(results);
     }
+
+
+
 
     private List<OrderSummary> mapOrderSummaries(List<Object[]> results) {
         List<OrderSummary> summaries = new ArrayList<>();

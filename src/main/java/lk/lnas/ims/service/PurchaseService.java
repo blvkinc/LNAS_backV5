@@ -86,6 +86,16 @@ public class PurchaseService {
         purchaseDTO.setShipping(purchase.getShipping());
         purchaseDTO.setTotal(purchase.getTotal());
         purchaseDTO.setDocumentId(purchase.getDocumentId());
+        purchaseDTO.setItems(purchase.getPurchaseItem().stream().map(purchaseItem -> {
+            PurchaseItemDTO dto = new PurchaseItemDTO();
+            dto.setId(purchaseItem.getId());
+            dto.setPrice(purchaseItem.getPrice());
+            dto.setDiscount(purchaseItem.getDiscount());
+            dto.setQty(purchaseItem.getQty());
+            dto.setPlant(purchaseItem.getPlant().getId());
+            dto.setDescription(purchaseItem.getDescription());
+            return dto;
+        }).toList());
         return purchaseDTO;
     }
 
